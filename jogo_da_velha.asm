@@ -110,88 +110,128 @@ LEITURA:
 
 ; SUBROTINAS do jogador CÍRCULO
 JOG_C1:
+    LDA TAB
+    JNZ LEITURA
+    LDA #1
+    STA TAB   ;grava circulo na memoria
     LDA #25
     TRAP circulo1S ; sombra 1 circulo
     LDA #25
     TRAP circulo1SS ; sombra 2 circulo
     LDA #25
     TRAP circulo1 ; circulo básico
-    HLT
+    JMP LEITURA
 
 JOG_C2:
+    LDA TAB+1
+    JNZ LEITURA
+    LDA #1
+    STA TAB+1
     LDA #25
     TRAP circulo2S
     LDA #25
     TRAP circulo2SS
     LDA #25
     TRAP circulo2
-    HLT
+    JMP LEITURA
 
 JOG_C3:
+    LDA TAB+2
+    JNZ LEITURA
+    LDA #1
+    STA TAB+2
     LDA #25
     TRAP circulo3S
     LDA #25
     TRAP circulo3SS
     LDA #25
     TRAP circulo3
-    HLT
+    JMP LEITURA
 
 JOG_C4:
+    LDA TAB+3
+    JNZ LEITURA
+    LDA #1
+    STA TAB+3 
     LDA #25
     TRAP circulo4S
     LDA #25
     TRAP circulo4SS
     LDA #25
     TRAP circulo4
-    HLT
+    JMP LEITURA
 
 JOG_C5:
+    LDA TAB+4
+    JNZ LEITURA
+    LDA #1
+    STA TAB+4 
     LDA #25
     TRAP circulo5S
     LDA #25
     TRAP circulo5SS
     LDA #25
     TRAP circulo5
-    HLT
+    JMP LEITURA
 
 JOG_C6:
+    LDA TAB+5
+    JNZ LEITURA
+    LDA #1
+    STA TAB+5 
     LDA #25
     TRAP circulo6S
     LDA #25
     TRAP circulo6SS
     LDA #25
     TRAP circulo6
-    HLT
+    JMP LEITURA
 
 JOG_C7:
+    LDA TAB+6
+    JNZ LEITURA
+    LDA #1
+    STA TAB+6 
     LDA #25
     TRAP circulo7S
     LDA #25
     TRAP circulo7SS
     LDA #25
     TRAP circulo7
-    HLT
+    JMP LEITURA
 
 JOG_C8:
+    LDA TAB+7
+    JNZ LEITURA
+    LDA #1
+    STA TAB+7 
     LDA #25
     TRAP circulo8S
     LDA #25
     TRAP circulo8SS
     LDA #25
     TRAP circulo8
-    HLT
+    JMP LEITURA
 
 JOG_C9:
+    LDA TAB+8
+    JNZ LEITURA
+    LDA #1
+    STA TAB+8 
     LDA #25
     TRAP circulo9S
     LDA #25
     TRAP circulo9SS
     LDA #25
     TRAP circulo9
-    HLT
+    JMP LEITURA
 
 ; SUBROTINAS do jogador XIS
 JOG_X1:
+    LDA TAB
+    JNZ LEITURA
+    LDA #4
+    STA TAB   ;grava circulo na memoria
     LDA #23
     TRAP xis11SS ; sombra 2 traço direito do X
     LDA #23
@@ -204,9 +244,13 @@ JOG_X1:
     TRAP xis11 ; traço direito do X
     LDA #23
     TRAP xis12 ; traço esquero do X
-    HLT
+    JMP LEITURA
 
 JOG_X2:
+    LDA TAB+1
+    JNZ LEITURA
+    LDA #4
+    STA TAB+1
     LDA #23
     TRAP xis21SS
     LDA #23
@@ -219,9 +263,13 @@ JOG_X2:
     TRAP xis21
     LDA #23
     TRAP xis22
-    HLT
+    JMP LEITURA
 
 JOG_X3:
+    LDA TAB+2
+    JNZ LEITURA
+    LDA #4
+    STA TAB+2
     LDA #23
     TRAP xis31SS
     LDA #23
@@ -234,9 +282,13 @@ JOG_X3:
     TRAP xis31
     LDA #23
     TRAP xis32
-    HLT
+    JMP LEITURA
 
 JOG_X4:
+    LDA TAB+3
+    JNZ LEITURA
+    LDA #4
+    STA TAB+3 
     LDA #23
     TRAP xis41SS
     LDA #23
@@ -249,9 +301,13 @@ JOG_X4:
     TRAP xis41
     LDA #23
     TRAP xis42
-    HLT
+    JMP LEITURA
 
 JOG_X5:
+    LDA TAB+4
+    JNZ LEITURA
+    LDA #4
+    STA TAB+4 
     LDA #23
     TRAP xis51SS
     LDA #23
@@ -264,9 +320,13 @@ JOG_X5:
     TRAP xis51
     LDA #23
     TRAP xis52
-    HLT
+    JMP LEITURA
 
 JOG_X6:
+    LDA TAB+5
+    JNZ LEITURA
+    LDA #4
+    STA TAB+5 
     LDA #23
     TRAP xis61SS
     LDA #23
@@ -279,9 +339,13 @@ JOG_X6:
     TRAP xis61
     LDA #23
     TRAP xis62
-    HLT
+    JMP LEITURA
 
 JOG_X7:
+    LDA TAB+6
+    JNZ LEITURA
+    LDA #4
+    STA TAB+6 
     LDA #23
     TRAP xis71SS
     LDA #23
@@ -294,9 +358,13 @@ JOG_X7:
     TRAP xis71
     LDA #23
     TRAP xis72
-    HLT
+    JMP LEITURA
 
 JOG_X8:
+    LDA TAB+7
+    JNZ LEITURA
+    LDA #4
+    STA TAB+7 
     LDA #23
     TRAP xis81SS
     LDA #23
@@ -309,9 +377,13 @@ JOG_X8:
     TRAP xis81
     LDA #23
     TRAP xis82
-    HLT
+    JMP LEITURA
 
 JOG_X9:
+    LDA TAB+8
+    JNZ LEITURA
+    LDA #4
+    STA TAB+8 
     LDA #23
     TRAP xis91SS
     LDA #23
@@ -324,7 +396,7 @@ JOG_X9:
     TRAP xis91
     LDA #23
     TRAP xis92
-    HLT
+    JMP LEITURA
 
 ; VARIÁVEL do DISPLAY
 BACKGROUND:
@@ -337,6 +409,10 @@ LIMPAR:
 ; VARIÁVEL da JOGADA escolhida pelo jogador
 OPCAO:
     DB 0;
+
+; VARIAVEIS DE MEMORIA DO TABULEIRO
+TAB:
+    DS 9
 
 ; VARIÁVEIS do tabuleiro
 jogo1V:
