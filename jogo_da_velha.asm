@@ -43,12 +43,12 @@ LEITURA:
     STA OPCAO
     LDA OPCAO
 
-; verifica teclas de movimento do cursor
-    SUB #0x8 
+; verifica teclas de MOVIMENTO do CURSOR
+    SUB #0x8
     JZ MOVE_CIMA
     LDA OPCAO
 
-    SUB #0x2 
+    SUB #0x2
     JZ MOVE_BAIXO
     LDA OPCAO
 
@@ -60,81 +60,23 @@ LEITURA:
     JZ MOVE_DIREITA
     LDA OPCAO
 
-; verifica OPCAO DE JOGADA que jogador CIRCULO digitou
-    SUB #0xA1
-    JZ JOG_C1
-    LDA OPCAO
+; confirma a jogada depois do MOVIMENTO do CURSOR
+    SUB #0X3
+    JZ JOG_CONFIRMADA
+    JMP LEITURA
 
-    SUB #0xA2
-    JZ JOG_C2
-    LDA OPCAO
+;===================================
+; SUBROTINA de jogada confirmada
+;===================================
+JOG_CONFIRMADA:
+    LDA TURNO
+    SUB #1
+    JZ OPCAO_JOG_XIS
 
-    SUB #0xA3
-    JZ JOG_C3
-    LDA OPCAO
-
-    SUB #0xA4
-    JZ JOG_C4
-    LDA OPCAO
-
-    SUB #0xA5
-    JZ JOG_C5
-    LDA OPCAO
-
-    SUB #0xA6
-    JZ JOG_C6
-    LDA OPCAO
-
-    SUB #0xA7
-    JZ JOG_C7
-    LDA OPCAO
-
-    SUB #0xA8
-    JZ JOG_C8
-    LDA OPCAO
-
-    SUB #0xA9
-    JZ JOG_C9
-    LDA OPCAO
-
-; verifica OPCAO DE JOGADA que jogador XIS digitou
-    SUB #0xB1
-    JZ JOG_X1
-    LDA OPCAO
-
-    SUB #0xB2
-    JZ JOG_X2
-    LDA OPCAO
-
-    SUB #0xB3
-    JZ JOG_X3
-    LDA OPCAO
-
-    SUB #0xB4
-    JZ JOG_X4
-    LDA OPCAO
-
-    SUB #0xB5
-    JZ JOG_X5
-    LDA OPCAO
-
-    SUB #0xB6
-    JZ JOG_X6
-    LDA OPCAO
-
-    SUB #0xB7
-    JZ JOG_X7
-    LDA OPCAO
-
-    SUB #0xB8
-    JZ JOG_X8
-    LDA OPCAO
-
-    SUB #0xB9
-    JZ JOG_X9
-    LDA OPCAO
-
-    JMP LEITURA ; caso a opcao digitada pelo usuário é inválida
+    LDA TURNO
+    SUB #2
+    JZ OPCAO_JOG_CIRCULO
+    JMP LEITURA
 
 ;========================================
 ;SUBROTINAS do cursor
@@ -144,7 +86,7 @@ LEITURA:
 MOVE_CIMA:
     LDA POS_CURSOR
     SUB #1
-    JZ LEITURA      
+    JZ LEITURA
     LDA POS_CURSOR
     SUB #2
     JZ LEITURA
@@ -199,9 +141,90 @@ MOVE_DIREITA:
     STA NOVA_POS
     JMP ATUALIZA_TELA
 
-;========================================
+OPCAO_JOG_CIRCULO:
+    LDA POS_CURSOR
+    SUB #1
+    JZ JOG_C1
+    LDA POS_CURSOR
+
+
+    SUB #2
+    JZ JOG_C2
+    LDA OPCAO
+
+    SUB #3
+    JZ JOG_C3
+    LDA POS_CURSOR
+
+    SUB #4
+    JZ JOG_C4
+    LDA POS_CURSOR
+
+    SUB #5
+    JZ JOG_C5
+    LDA POS_CURSOR
+
+    SUB #6
+    JZ JOG_C6
+    LDA POS_CURSOR
+
+    SUB #7
+    JZ JOG_C7
+    LDA POS_CURSOR
+
+    SUB #8
+    JZ JOG_C8
+    LDA POS_CURSOR
+
+    SUB #9
+    JZ JOG_C9
+    LDA POS_CURSOR
+
+OPCAO_JOG_XIS:
+    ; verifica OPCAO DE JOGADA do jogador XIS
+    LDA POS_CURSOR
+    SUB #1
+    JZ JOG_X1
+    LDA POS_CURSOR
+
+    SUB #2
+    JZ JOG_X2
+    LDA POS_CURSOR
+
+    SUB #3
+    JZ JOG_X3
+    LDA POS_CURSOR
+
+    SUB #4
+    JZ JOG_X4
+    LDA POS_CURSOR
+
+    SUB #5
+    JZ JOG_X5
+    LDA POS_CURSOR
+
+    SUB #6
+    JZ JOG_X6
+    LDA POS_CURSOR
+
+    SUB #7
+    JZ JOG_X7
+    LDA POS_CURSOR
+
+    SUB #8
+    JZ JOG_X8
+    LDA POS_CURSOR
+
+    SUB #9
+    JZ JOG_X9
+    LDA POS_CURSOR
+
+    JMP LEITURA ; caso a opcao digitada pelo usuário é inválida
+
+
+;=========================================
 ; ATUALIZAÇÃO VISUAL TELA (DESENHA CURSOR)
-;========================================
+;=========================================
 ATUALIZA_TELA:
     LDA POS_CURSOR
     SUB #1
@@ -348,42 +371,42 @@ EFETIVA_POS:
     JZ DESENHA_C9
     JMP LEITURA
 
-DESENHA_C1:   
+DESENHA_C1:
     LDA #24
     TRAP cursor1
     JSR FORMA1
     JMP LEITURA
-DESENHA_C2:    
+DESENHA_C2:
     LDA #24
     TRAP cursor2
     JSR FORMA2
     JMP LEITURA
-DESENHA_C3:   
+DESENHA_C3:
     LDA #24
     TRAP cursor3
     JSR FORMA3
     JMP LEITURA
-DESENHA_C4:    
+DESENHA_C4:
     LDA #24
     TRAP cursor4
     JSR FORMA4
     JMP LEITURA
-DESENHA_C5:    
+DESENHA_C5:
     LDA #24
     TRAP cursor5
     JSR FORMA5
     JMP LEITURA
-DESENHA_C6:    
+DESENHA_C6:
     LDA #24
     TRAP cursor6
     JSR FORMA6
     JMP LEITURA
-DESENHA_C7:    
+DESENHA_C7:
     LDA #24
     TRAP cursor7
     JSR FORMA7
     JMP LEITURA
-DESENHA_C8:    
+DESENHA_C8:
     LDA #24
     TRAP cursor8
     JSR FORMA8
@@ -471,6 +494,7 @@ FORMA3:
     LDA #25
     TRAP circulo3   
     RET
+
 
 F3_XIS:
     LDA TAB+2
@@ -682,6 +706,9 @@ JOG_C1:
     LDA #1
     STA TAB   ;grava circulo na memoria
     JSR FORMA1
+
+    LDA #2
+    STA TURNO
     JMP LEITURA
 
 JOG_C2:
@@ -690,6 +717,9 @@ JOG_C2:
     LDA #1
     STA TAB+1
     JSR FORMA2
+
+    LDA #2
+    STA TURNO
     JMP LEITURA
 
 JOG_C3:
@@ -698,6 +728,9 @@ JOG_C3:
     LDA #1
     STA TAB+2
     JSR FORMA3
+
+    LDA #2
+    STA TURNO
     JMP LEITURA
 
 JOG_C4:
@@ -706,6 +739,9 @@ JOG_C4:
     LDA #1
     STA TAB+3 
     JSR FORMA4
+
+    LDA #2
+    STA TURNO
     JMP LEITURA
 
 JOG_C5:
@@ -714,6 +750,9 @@ JOG_C5:
     LDA #1
     STA TAB+4 
     JSR FORMA5
+
+    LDA #2
+    STA TURNO
     JMP LEITURA
 
 JOG_C6:
@@ -721,7 +760,10 @@ JOG_C6:
     JNZ LEITURA
     LDA #1
     STA TAB+5 
-    JSR FORMA5
+    JSR FORMA6
+
+    LDA #2
+    STA TURNO
     JMP LEITURA
 
 JOG_C7:
@@ -730,6 +772,9 @@ JOG_C7:
     LDA #1
     STA TAB+6 
     JSR FORMA7
+
+    LDA #2
+    STA TURNO
     JMP LEITURA
 
 JOG_C8:
@@ -738,6 +783,9 @@ JOG_C8:
     LDA #1
     STA TAB+7 
     JSR FORMA8
+
+    LDA #2
+    STA TURNO
     JMP LEITURA
 
 JOG_C9:
@@ -746,6 +794,9 @@ JOG_C9:
     LDA #1
     STA TAB+8 
     JSR FORMA9
+
+    LDA #2
+    STA TURNO
     JMP LEITURA
 
 ;==========================
@@ -757,6 +808,10 @@ JOG_X1:
     LDA #4
     STA TAB
     JSR FORMA1
+
+    ; troca turno para JOG CIRCULO
+    LDA #1
+    STA TURNO
     JMP LEITURA
 
 JOG_X2:
@@ -765,6 +820,9 @@ JOG_X2:
     LDA #4
     STA TAB+1
     JSR FORMA2
+
+    LDA #1
+    STA TURNO
     JMP LEITURA
 
 JOG_X3:
@@ -773,55 +831,75 @@ JOG_X3:
     LDA #4
     STA TAB+2
     JSR FORMA3
+
+    LDA #1
+    STA TURNO
     JMP LEITURA
 
 JOG_X4:
     LDA TAB+3
     JNZ LEITURA
     LDA #4
-    STA TAB+3 
+    STA TAB+3
     JSR FORMA4
+
+    LDA #1
+    STA TURNO
     JMP LEITURA
 
 JOG_X5:
     LDA TAB+4
     JNZ LEITURA
     LDA #4
-    STA TAB+4 
+    STA TAB+4
     JSR FORMA5
+
+    LDA #1
+    STA TURNO
     JMP LEITURA
 
 JOG_X6:
     LDA TAB+5
     JNZ LEITURA
     LDA #4
-    STA TAB+5 
+    STA TAB+5
     JSR FORMA6
+
+    LDA #1
+    STA TURNO
     JMP LEITURA
 
 JOG_X7:
     LDA TAB+6
     JNZ LEITURA
     LDA #4
-    STA TAB+6 
-    LDA #23
+    STA TAB+6
     JSR FORMA7
+
+    LDA #1
+    STA TURNO
     JMP LEITURA
 
 JOG_X8:
     LDA TAB+7
     JNZ LEITURA
     LDA #4
-    STA TAB+7 
+    STA TAB+7
     JSR FORMA8
+
+    LDA #1
+    STA TURNO
     JMP LEITURA
 
 JOG_X9:
     LDA TAB+8
     JNZ LEITURA
     LDA #4
-    STA TAB+8 
+    STA TAB+8
     JSR FORMA9
+
+    LDA #1
+    STA TURNO
     JMP LEITURA
 
 ;==========================
@@ -834,6 +912,10 @@ VIDEO_CONFIG:
     DW VIDEO_BASE
 LIMPAR:
     DB 3
+
+; VARIAVEL ordem dos jogadores
+TURNO:
+    DB 1;
 
 ; VARIÁVEL da JOGADA escolhida pelo jogador
 OPCAO:
