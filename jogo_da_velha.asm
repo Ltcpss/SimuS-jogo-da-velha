@@ -143,14 +143,14 @@ MOVE_DIREITA:
 
 OPCAO_JOG_CIRCULO:
     LDA POS_CURSOR
+
     SUB #1
     JZ JOG_C1
     LDA POS_CURSOR
 
-
     SUB #2
     JZ JOG_C2
-    LDA OPCAO
+    LDA POS_CURSOR
 
     SUB #3
     JZ JOG_C3
@@ -180,9 +180,12 @@ OPCAO_JOG_CIRCULO:
     JZ JOG_C9
     LDA POS_CURSOR
 
+    JMP LEITURA ; caso a opcao digitada pelo usuário é inválida
+
 OPCAO_JOG_XIS:
     ; verifica OPCAO DE JOGADA do jogador XIS
     LDA POS_CURSOR
+
     SUB #1
     JZ JOG_X1
     LDA POS_CURSOR
@@ -707,7 +710,7 @@ JOG_C1:
     STA TAB   ;grava circulo na memoria
     JSR FORMA1
 
-    LDA #2
+    LDA #1
     STA TURNO
     JMP LEITURA
 
@@ -718,7 +721,7 @@ JOG_C2:
     STA TAB+1
     JSR FORMA2
 
-    LDA #2
+    LDA #1
     STA TURNO
     JMP LEITURA
 
@@ -729,7 +732,7 @@ JOG_C3:
     STA TAB+2
     JSR FORMA3
 
-    LDA #2
+    LDA #1
     STA TURNO
     JMP LEITURA
 
@@ -740,7 +743,7 @@ JOG_C4:
     STA TAB+3 
     JSR FORMA4
 
-    LDA #2
+    LDA #1
     STA TURNO
     JMP LEITURA
 
@@ -751,7 +754,7 @@ JOG_C5:
     STA TAB+4 
     JSR FORMA5
 
-    LDA #2
+    LDA #1
     STA TURNO
     JMP LEITURA
 
@@ -762,7 +765,7 @@ JOG_C6:
     STA TAB+5 
     JSR FORMA6
 
-    LDA #2
+    LDA #1
     STA TURNO
     JMP LEITURA
 
@@ -773,7 +776,7 @@ JOG_C7:
     STA TAB+6 
     JSR FORMA7
 
-    LDA #2
+    LDA #1
     STA TURNO
     JMP LEITURA
 
@@ -784,7 +787,7 @@ JOG_C8:
     STA TAB+7 
     JSR FORMA8
 
-    LDA #2
+    LDA #1
     STA TURNO
     JMP LEITURA
 
@@ -795,7 +798,7 @@ JOG_C9:
     STA TAB+8 
     JSR FORMA9
 
-    LDA #2
+    LDA #1
     STA TURNO
     JMP LEITURA
 
@@ -810,7 +813,7 @@ JOG_X1:
     JSR FORMA1
 
     ; troca turno para JOG CIRCULO
-    LDA #1
+    LDA #2
     STA TURNO
     JMP LEITURA
 
@@ -821,7 +824,7 @@ JOG_X2:
     STA TAB+1
     JSR FORMA2
 
-    LDA #1
+    LDA #2
     STA TURNO
     JMP LEITURA
 
@@ -832,7 +835,7 @@ JOG_X3:
     STA TAB+2
     JSR FORMA3
 
-    LDA #1
+    LDA #2
     STA TURNO
     JMP LEITURA
 
@@ -843,7 +846,7 @@ JOG_X4:
     STA TAB+3
     JSR FORMA4
 
-    LDA #1
+    LDA #2
     STA TURNO
     JMP LEITURA
 
@@ -854,7 +857,7 @@ JOG_X5:
     STA TAB+4
     JSR FORMA5
 
-    LDA #1
+    LDA #2
     STA TURNO
     JMP LEITURA
 
@@ -865,7 +868,7 @@ JOG_X6:
     STA TAB+5
     JSR FORMA6
 
-    LDA #1
+    LDA #2
     STA TURNO
     JMP LEITURA
 
@@ -876,7 +879,7 @@ JOG_X7:
     STA TAB+6
     JSR FORMA7
 
-    LDA #1
+    LDA #2
     STA TURNO
     JMP LEITURA
 
@@ -887,7 +890,7 @@ JOG_X8:
     STA TAB+7
     JSR FORMA8
 
-    LDA #1
+    LDA #2
     STA TURNO
     JMP LEITURA
 
@@ -898,7 +901,7 @@ JOG_X9:
     STA TAB+8
     JSR FORMA9
 
-    LDA #1
+    LDA #2
     STA TURNO
     JMP LEITURA
 
@@ -915,7 +918,7 @@ LIMPAR:
 
 ; VARIAVEL ordem dos jogadores
 TURNO:
-    DB 1;
+    DB 1; ; comeca pelo jogador XIS
 
 ; VARIÁVEL da JOGADA escolhida pelo jogador
 OPCAO:
