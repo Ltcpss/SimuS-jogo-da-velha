@@ -712,7 +712,7 @@ JOG_C1:
 
     LDA #1
     STA TURNO
-    JMP LEITURA
+    JMP CHECA_FIM_RODADA
 
 JOG_C2:
     LDA TAB+1
@@ -723,7 +723,7 @@ JOG_C2:
 
     LDA #1
     STA TURNO
-    JMP LEITURA
+    JMP CHECA_FIM_RODADA
 
 JOG_C3:
     LDA TAB+2
@@ -734,7 +734,7 @@ JOG_C3:
 
     LDA #1
     STA TURNO
-    JMP LEITURA
+    JMP CHECA_FIM_RODADA
 
 JOG_C4:
     LDA TAB+3
@@ -745,7 +745,7 @@ JOG_C4:
 
     LDA #1
     STA TURNO
-    JMP LEITURA
+    JMP CHECA_FIM_RODADA
 
 JOG_C5:
     LDA TAB+4
@@ -756,7 +756,7 @@ JOG_C5:
 
     LDA #1
     STA TURNO
-    JMP LEITURA
+    JMP CHECA_FIM_RODADA
 
 JOG_C6:
     LDA TAB+5
@@ -767,7 +767,7 @@ JOG_C6:
 
     LDA #1
     STA TURNO
-    JMP LEITURA
+    JMP CHECA_FIM_RODADA
 
 JOG_C7:
     LDA TAB+6
@@ -778,7 +778,7 @@ JOG_C7:
 
     LDA #1
     STA TURNO
-    JMP LEITURA
+    JMP CHECA_FIM_RODADA
 
 JOG_C8:
     LDA TAB+7
@@ -789,7 +789,7 @@ JOG_C8:
 
     LDA #1
     STA TURNO
-    JMP LEITURA
+    JMP CHECA_FIM_RODADA
 
 JOG_C9:
     LDA TAB+8
@@ -800,7 +800,7 @@ JOG_C9:
 
     LDA #1
     STA TURNO
-    JMP LEITURA
+    JMP CHECA_FIM_RODADA
 
 ;==========================
 ; SUBROTINAS do jogador XIS
@@ -815,7 +815,7 @@ JOG_X1:
     ; troca turno para JOG CIRCULO
     LDA #2
     STA TURNO
-    JMP LEITURA
+    JMP CHECA_FIM_RODADA
 
 JOG_X2:
     LDA TAB+1
@@ -826,7 +826,7 @@ JOG_X2:
 
     LDA #2
     STA TURNO
-    JMP LEITURA
+    JMP CHECA_FIM_RODADA
 
 JOG_X3:
     LDA TAB+2
@@ -837,7 +837,7 @@ JOG_X3:
 
     LDA #2
     STA TURNO
-    JMP LEITURA
+    JMP CHECA_FIM_RODADA
 
 JOG_X4:
     LDA TAB+3
@@ -848,7 +848,7 @@ JOG_X4:
 
     LDA #2
     STA TURNO
-    JMP LEITURA
+    JMP CHECA_FIM_RODADA
 
 JOG_X5:
     LDA TAB+4
@@ -859,7 +859,7 @@ JOG_X5:
 
     LDA #2
     STA TURNO
-    JMP LEITURA
+    JMP CHECA_FIM_RODADA
 
 JOG_X6:
     LDA TAB+5
@@ -870,7 +870,7 @@ JOG_X6:
 
     LDA #2
     STA TURNO
-    JMP LEITURA
+    JMP CHECA_FIM_RODADA
 
 JOG_X7:
     LDA TAB+6
@@ -881,7 +881,7 @@ JOG_X7:
 
     LDA #2
     STA TURNO
-    JMP LEITURA
+    JMP CHECA_FIM_RODADA
 
 JOG_X8:
     LDA TAB+7
@@ -892,7 +892,7 @@ JOG_X8:
 
     LDA #2
     STA TURNO
-    JMP LEITURA
+    JMP CHECA_FIM_RODADA
 
 JOG_X9:
     LDA TAB+8
@@ -903,7 +903,142 @@ JOG_X9:
 
     LDA #2
     STA TURNO
+    JMP CHECA_FIM_RODADA
+
+;=============================
+; CHECAGEM APÓS UMA JOGADA
+;=============================
+CHECA_FIM_RODADA:
+    JSR VERIFICA_VITORIA ; checa as 8 trincas (3 linhas, 3 colunas e 2 diagonais)
+    STA RESULTADO_VIT ; salva o retorno de VERIFICA_VITORIA: 0 se ngm venceu, 1 se círculo venceu e 2 se xis venceu (o que foi pro AC com o RET de VERIFICA_VITORIA)
+
+    ; Teste pra ver se círculo venceu (retorno foi 1)
+    SUB #1
+    JZ VITORIA_CIRCULO
+
+    ; Teste pra ver se xis venceu (retorno foi 2)
+    LDA RESULTADO_VIT
+    SUB #2
+    JZ VITORIA_XIS
+
+    ; Se ninguém venceu, jogo segue com a LEITURA
     JMP LEITURA
+
+;===========================
+; ROTINAS DE ENCERRAMENTO
+;===========================
+VITORIA_CIRCULO:
+    LDA #1 ; vitória do circulo 
+    OUT 0 ; exibe o 1 no display hex de saída
+    HLT
+
+VITORIA_XIS:
+    LDA #2
+    OUT 0
+    HLT
+
+RESULTADO_VIT: DB 0 ; recebe o número referente a quem ganhou
+
+;===================================
+; SUB-ROTINA DE VERIFICAR A VITÓRIA
+;===================================
+VERIFICA_VITORIA: 
+; Verifica se teve vitória em alguma das trincas utilizando CHECA_TRINCA: se a soma de cada das posições da trinca der 3, é vitória do círculo (já que o número do círculo é 1) e retorna 1,
+; se der 12, é vitória do xis (já que seu número é 4) e retorna 2
+   
+    ; --- LINHA 1 (posições 1, 2, 3: TAB, TAB+1. TAB+2) ---
+    LDA TAB
+    ADD TAB+1
+    ADD TAB+2
+    JSR CHECA_TRINCA ; se a trinca teve vencedor, CHECA_TRINCA retorna 1 ou 2 no AC, se não tiver, retorna 0
+    JNZ FIM_CHECAGEM ; se houve vitória, salta pra FIM_CHECAGEM, que encerra a sub-rotina com RET, que envia o código do vencedor pra AC
+
+    ; --- LINHA 2 (posições 4, 5, 6: TAB+3, TAB+4, TAB+5)
+    LDA TAB+3 
+    ADD TAB+4 
+    ADD TAB+5 
+    JSR CHECA_TRINCA 
+    JNZ FIM_CHECAGEM
+
+    ; --- LINHA 3 (posições 7, 8, 9: TAB+6, TAB+7, TAB+8)
+    LDA TAB+6
+    ADD TAB+7
+    ADD TAB+8
+    JSR CHECA_TRINCA
+    JNZ FIM_CHECAGEM
+
+    ; ---COLUNA 1 (posições 1, 4, 7) --- 
+    LDA TAB 
+    ADD TAB+3 
+    ADD TAB+6 
+    JSR CHECA_TRINCA 
+    JNZ FIM_CHECAGEM
+
+    ; --- COLUNA 2 (posições 2, 5, 8) --- 
+    LDA TAB+1 
+    ADD TAB+4 
+    ADD TAB+7 
+    JSR CHECA_TRINCA 
+    JNZ FIM_CHECAGEM
+
+    ; --- COLUNA 3 (posições 3, 6, 9) --- 
+    LDA TAB+2 
+    ADD TAB+5 
+    ADD TAB+8 
+    JSR CHECA_TRINCA 
+    JNZ FIM_CHECAGEM
+
+    ; --- DIAGONAL 1 (posições 1, 5, 9) --- 
+    LDA TAB 
+    ADD TAB+4 
+    ADD TAB+8 
+    JSR CHECA_TRINCA 
+    JNZ FIM_CHECAGEM
+
+    ; --- DIAGONAL 2 (posições 3, 5, 7) --- 
+    LDA TAB+2 
+    ADD TAB+4 
+    ADD TAB+6 
+    JSR CHECA_TRINCA 
+    JNZ FIM_CHECAGEM
+
+    ; Se nenhuma trinca tiver vitória (soma 3 ou 12)
+    LDA #0 
+    RET
+
+FIM_CHECAGEM:
+    RET
+
+;======================================
+; CHECAR SE TRINCA TEVE SOMA 3 OU 12
+;======================================
+CHECA_TRINCA:
+    STA SOMA_TEMP
+
+    ; Testa se soma == 3
+    SUB #3
+    JZ VIT_CIRCULO ; se, ao subtrair 3, fica = 0, é pq soma era 3 e foi vitória do círculo
+
+    ; Testa se soma == 12
+    LDA SOMA_TEMP
+    SUB #12
+    JZ VIT_XIS
+
+    ; Se não deu nem 3 nem 12
+    LDA #0
+    RET
+
+; Responde pra VERIFICA_VITORIA qual dos jogadores completou a trinca
+VIT_CIRCULO:
+    LDA #1 ; retorna 1 no AC se círculo tiver ganhado
+    RET
+
+VIT_XIS:
+    LDA #2 ; retorna 2 no AC se xis tiver ganhado
+    RET
+
+SOMA_TEMP: DB 0
+
 
 ;==========================
 ; VARIAVEIS
